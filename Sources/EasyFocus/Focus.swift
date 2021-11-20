@@ -4,7 +4,9 @@
 //  Created by Andrew Cowley on 16/11/2021.
 //
 import SwiftUI
-
+public struct EasyFocus {
+   
+}
 /// Generic implementation of the enum used by @FocusState.
 /// If the datamodel complies with FocusableListRow, then  we can rely on the
 /// underlying type of the id field instead of hardcoding it to String, or Int,  which is common.
