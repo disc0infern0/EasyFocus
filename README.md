@@ -1,10 +1,10 @@
-# Focus
-==========
+# EasyFocus
+================
 
 A generic way to implement focus on an Identifiable datamodel and makes it simple 
 to get and set focus to records in an array, which is especially useful for Lists.
 
-## Why does this package need to be ?
+## Why does this package exist ?
 
 Using the out of the box @FocusState propery wrapper over data arrays means using 
 enums with associated values, and the code then becomes somewhat complex as we will
@@ -14,6 +14,8 @@ see in two trivial examples below.
 In order to print the text value from a record in your data array, you would
 need code such as that below. 
 ```
+	@Focus private var focusField: FocusData?
+	...
 	case .focusData(let id) = focusField
 	if let id = id,
 		let index = yourDataArray.firstIndexOf( where { $0.id = id }) {
@@ -31,7 +33,7 @@ It's fine. It's okay. But it should be easier, right?
 ## A Solution
 I'm sure there are other ways to make it easier, but this package attempts to make it simple
 to both set the focus, and get data from the record that is currently focused. 
-Using the same examples as those above, 
+Using the same examples as those above, this package defines an @Focus property wrapper;
 ### @Focus example:
 ```
 	print(focusField?.text ?? "no text")
