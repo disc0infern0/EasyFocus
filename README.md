@@ -46,5 +46,30 @@ no more than is required for the out of the box SwiftUI solution.
 See the example.swift file for a full worked example, that syncs it's focus field with a view model.
 
 
+# Usage
+
+First, ```import Focus```.
+
+Second, define your data model, and make it comply with ```FocusableListRow```
+To do that, just add an id field, and make sure the struct is hashable.
+e.g. 
+```
+	struct myDataModel : FocusableListRow {
+		id: Int
+		text: String
+	}
+```
+Then, define your variable to hold focus;
+```
+	@Focus private var focusedRow: myDataModel?
+```
+On the data items that you want to set focus, add a call to ``` .enableFocus``` 
+e.g.
+```
+	.enableFocus(on: myDataItem, with: _focusedRow)
+```
+you can now set and get focus using the variable ```focusedRow```. 
+
+
 # The End.
 
