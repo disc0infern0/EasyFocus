@@ -1,14 +1,14 @@
 //
 //  Example.swift
-//  GenericFocus
+//  EasyFocus
 //
 //  Created by Andrew Cowley on 19/11/2021.
 //
 /*
 import SwiftUI
 
-struct GenericFocusExample: View {
-   @StateObject var vm = GenericFocusViewModel()
+struct EasyFocusExample: View {
+   @StateObject var vm = EasyFocusViewModel()
    @Focus private var focusedRow: FocusDataModelExample?
    var body: some View {
       VStack {
@@ -30,7 +30,7 @@ struct GenericFocusExample: View {
    }
 }
 
-class GenericFocusViewModel: ObservableObject {
+class EasyFocusViewModel: ObservableObject {
    @Published var data = FocusDataModelExample.examples
    @Published var focusedRow: FocusDataModelExample?
    @Published var randomRow: Int = 0  // For settng focus to random rows
@@ -77,9 +77,9 @@ struct FocusDataModelExample: FocusableListRow {
 }
 
 // Previews of this view currently crashes in Xcode 13.2 beta 2
-struct Example_Previews: PreviewProvider {
+struct EasyFocusExample_Previews: PreviewProvider {
    static var previews: some View {
-      GenericFocusExample()
+      EasyFocusExample()
    }
 }
 */

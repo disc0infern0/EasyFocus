@@ -15,7 +15,6 @@ public struct EasyFocus {
 ///
 public enum FocusID <T: Identifiable & Equatable> : Hashable {
    case row(id: T.ID)
-   case none
 }
 
 /// Protocol that the datamodel for each row used in a List must satisfy.
