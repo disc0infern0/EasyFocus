@@ -81,28 +81,28 @@ public struct Focus<Row: FocusableListRow>: DynamicProperty {
 }
 
 public extension View {
+   /// Mark the row with a condition so that focus can be set/get to/from it.
+   /// Also add a tap gesture to the row to recognise user moving focus.
    func enableFocus<Row: FocusableListRow> (
       on row: Row, with focus: Focus<Row>) -> some View {
          modifier(FocusModifier(row: row, focus: focus))
       }
+
+   /// Mirror changes between an @Published variable (typically in your View Model)
+   /// and an @Focus variable in a view
+   func sync<Row: FocusableListRow>(_ field1: Binding<Row?>, _ field2: Focus<Row> ) -> some View {
+      return self
+         .onChange(of: field1.wrappedValue) { field2.wrappedValue = $0 }
+         .onChange(of: field2.wrappedValue ) { field1.wrappedValue = $0 }
+   }
 }
 
 public struct FocusModifier<Row: FocusableListRow>: ViewModifier {
    var row: Row
-   //   var focusBinding: FocusState<FocusID<Row>?>.Binding
    var focus: Focus<Row>
    public func body(content: Content) -> some View {
       return content
          .focused(focus.projectedValue, equals: .row(id: row.id))
          .onTapGesture { focus.wrappedValue = row }
-   }
-}
-/// Mirror changes between an @Published variable (typically in your View Model)
-/// and an @Focus variable in a view
-extension View {
-   func sync<Row: FocusableListRow>(_ field1: Binding<Row?>, _ field2: Focus<Row> ) -> some View {
-      return self
-         .onChange(of: field1.wrappedValue) { field2.wrappedValue = $0 }
-         .onChange(of: field2.wrappedValue ) { field1.wrappedValue = $0 }
    }
 }
