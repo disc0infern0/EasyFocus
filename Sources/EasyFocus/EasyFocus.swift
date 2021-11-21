@@ -113,7 +113,6 @@ public struct FocusModifier<Row: FocusableListRow>: ViewModifier {
          .onTapGesture { focus.wrappedValue = row }
    }
 }
-
 /// push changes to viewmodel publisher on to view after a small delay
 /// but sync changes on the view(via the UI)  to the viewmodel instantly
 public struct FocusSync<Row: FocusableListRow>: ViewModifier {
