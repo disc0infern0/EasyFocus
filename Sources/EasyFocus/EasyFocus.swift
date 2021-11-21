@@ -4,6 +4,8 @@
 //  Created by Andrew Cowley on 16/11/2021.
 //
 import SwiftUI
+import Combine
+
 public struct EasyFocus {
    
 }
@@ -91,13 +93,17 @@ public extension View {
 
    /// Mirror changes between an @Published variable (typically in your View Model)
    /// and an @Focus variable in a view
-   func sync<Row: FocusableListRow>(_ field1: Binding<Row?>, _ field2: Focus<Row> ) -> some View {
-      return self
-         .onChange(of: field1.wrappedValue) { field2.wrappedValue = $0 }
-         .onChange(of: field2.wrappedValue ) { field1.wrappedValue = $0 }
+   func sync<Row: FocusableListRow>(_ publisher: Binding<Row?>, _ focusRow: Focus<Row> ) -> some View {
+		modifier(FocusSync(vmPublisher: publisher, focusRow: focusRow))
+      /* For XCode 13.2 beta no delay is necessary and the above modifier is not needed */
+//      return self
+//         .onChange(of: publisher.wrappedValue) { focusRow.wrappedValue = $0 }
+//         .onChange(of: focusRow.wrappedValue ) { publisher.wrappedValue = $0 }
    }
 }
 
+/// Mark the view with the @FocusState equality condition to allow focus tracking
+/// Also add a tap gesture to track focus changes made in the UI
 public struct FocusModifier<Row: FocusableListRow>: ViewModifier {
    var row: Row
    var focus: Focus<Row>
@@ -105,5 +111,32 @@ public struct FocusModifier<Row: FocusableListRow>: ViewModifier {
       return content
          .focused(focus.projectedValue, equals: .row(id: row.id))
          .onTapGesture { focus.wrappedValue = row }
+   }
+}
+
+/// push changes to viewmodel publisher on to view after a small delay
+/// but sync changes on the view(via the UI)  to the viewmodel instantly
+public struct FocusSync<Row: FocusableListRow>: ViewModifier {
+	var vmPublisher: Binding<Row?>
+	var focusRow: Focus<Row>
+
+   init( vmPublisher: Binding<Row?>, focusRow: Focus<Row>) {
+      self.vmPublisher = vmPublisher
+      self.focusRow = focusRow
+   }
+
+   func delay(update: @escaping ()-> Void ) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: update )
+   }
+   public func body(content: Content) -> some View {
+      return content
+         .onChange(of: vmPublisher.wrappedValue) { newValue in
+            delay {
+               self.focusRow.wrappedValue = newValue
+            }
+         }
+         .onChange(of: focusRow.wrappedValue ) { newValue in
+            self.vmPublisher.wrappedValue = newValue
+         }
    }
 }
