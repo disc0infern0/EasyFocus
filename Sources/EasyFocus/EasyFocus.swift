@@ -1,7 +1,8 @@
 //
 //  Focus
 //
-//  Created by Andrew Cowley on 16/11/2021.
+// MIT License (c) 2021 Andrew Cowley
+// see attached License.md
 //
 import SwiftUI
 import Combine
